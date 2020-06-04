@@ -43,7 +43,7 @@ date: The date on which the measurement was taken in YYYY-MM-DD format
 
 interval: Identifier for the 5-minute interval in which measurement was taken
 
-```{r}
+```{r  echo = TRUE}
 str(data)
 ```
 
@@ -53,7 +53,7 @@ str(data)
 For this part of the assignment, you can ignore the missing values in the dataset.
 
 #### Make a histogram of the total number of steps taken each day
-```{r}
+```{r echo = TRUE}
 library(tidyverse)
 
 dataAgg <- aggregate(steps ~ date, data, sum)
@@ -70,7 +70,7 @@ ggplot(dataAgg, aes(factor(date), steps)) +
 
 
 #### Calculate and report the mean and median total number of steps taken per day
-```{r}
+```{r echo = TRUE}
 meanSteps <- mean(dataAgg$steps, na.rm = TRUE)
 medianSteps <- median(dataAgg$steps, na.rm = TRUE)
 ```
@@ -84,7 +84,7 @@ Median total number of steps:  `r medianSteps`
 
 ## What is the average daily activity pattern?
 #### 1.Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-```{r}
+```{r echo = TRUE}
 intervalAgg <- aggregate(steps ~ interval, data, mean)
 ggplot(data = intervalAgg, aes(x = interval, y = steps)) +
   geom_line() +
@@ -97,7 +97,7 @@ ggplot(data = intervalAgg, aes(x = interval, y = steps)) +
 
 #### 2.Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps
 
-```{r}
+```{r echo = TRUE}
 max_Interval <- intervalAgg[which.max(intervalAgg$steps),1:2]
 ```
 Maximun number of Steps: `r max_Interval[[2]]`
@@ -113,7 +113,7 @@ Note that there are a number of days/intervals where there are missing values (c
 #### 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
 
-```{r}
+```{r echo = TRUE}
 NAs <- length(which(is.na(data$steps)))
 ```
 Total Number of missing values: `r NAs`
@@ -122,7 +122,7 @@ Total Number of missing values: `r NAs`
 #### 2.Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
 
-```{r}
+```{r echo = TRUE}
 NAs <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE))
 data2 <- data
 data2[] <- lapply(data, NAs)
@@ -132,7 +132,7 @@ data2[] <- lapply(data, NAs)
 
 #### 3.Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-```{r}
+```{r echo = TRUE}
 dataAgg2 <- aggregate(steps ~ date, data2, sum)
 
 ggplot(dataAgg2, aes(factor(date), steps)) +
@@ -145,7 +145,7 @@ ggplot(dataAgg2, aes(factor(date), steps)) +
         axis.text.x = element_text(angle=90, hjust=0.5))
 ```
 
-```{r}
+```{r echo = TRUE}
 meanSteps2 <- mean(dataAgg2$steps, na.rm = TRUE)
 medianSteps2 <- median(dataAgg2$steps, na.rm = TRUE)
 ```
@@ -153,7 +153,7 @@ Mean total number of steps: `r meanSteps2`
 
 Median total number of steps:  `r medianSteps2`
 
-```{r}
+```{r echo = TRUE}
 diffmeanSteps <- meanSteps2 - meanSteps
 diffmedianSteps <- medianSteps2 - medianSteps
 ```
@@ -171,7 +171,7 @@ Difference in mean number of steps: `r diffmedianSteps`
 #### 1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 
-```{r}
+```{r echo = TRUE}
 library(lubridate)
 data2$date <- ymd(data2$date)
 data2$day <- ifelse(weekdays(data2$date) %in% c("Saturday","Sunday"), "Weekday", "Weekend")
@@ -180,7 +180,7 @@ data2$day <- ifelse(weekdays(data2$date) %in% c("Saturday","Sunday"), "Weekday",
 
 #### 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
 
-```{r}
+```{r echo = TRUE}
 
 library(lattice)
 
